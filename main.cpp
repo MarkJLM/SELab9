@@ -34,6 +34,22 @@ void add(int* matrix1, int* matrix2, int size) {
     displayMatrix(output, size, maxDigits/10);
 }
 
+void multiply(int* matrix1, int* matrix2, int size) {
+    cout << "Product of input matrices:" << endl;
+    int output[size*size];
+    int maxDigits = 10;
+    for (int i = 0; i < size * size; i ++) {
+        output[i] = 0;
+        for (int j = 0; j < size; j ++) {
+            output[i] += (*(matrix1+(i/size)*size+j)) * (*(matrix2+i%size+j*size));
+        }
+        while (maxDigits < output[i]) {
+            maxDigits *= 10;
+        }
+    }
+    displayMatrix(output, size, maxDigits/10);
+}
+
 int main() {
     //Open a file
     string fileName;
@@ -63,11 +79,13 @@ int main() {
             data[i*matrixSize+j+1] = (fileLine[j*3] - 48)*10 + fileLine[j*3+1] - 48;
         }
     }
+    int* matrix1 = data+1;
+    int* matrix2 = data+1+matrixSize*matrixSize;
     matrixFile.close();
     //Display input matrices
-    displayMatrix(data+1, matrixSize, 10);
+    displayMatrix(matrix1, matrixSize, 10);
     cout << endl;
-    displayMatrix(data+1+matrixSize*matrixSize, matrixSize, 10);
+    displayMatrix(matrix2, matrixSize, 10);
     cout << endl;
     //Start asking for more actions
     int choice = 8;
@@ -82,7 +100,10 @@ int main() {
             cout << "Goodbye!";
         } else if (choice == 2) {
             //Add the input matrices
-            add(data+1, data+1+matrixSize*matrixSize, matrixSize);
+            add(matrix1, matrix2, matrixSize);
+        } else if (choice == 3) {
+            //Multiply the input matrices
+            multiply(matrix1, matrix2, matrixSize);
         } else {
             cout << "Invalid choice.";
         }
