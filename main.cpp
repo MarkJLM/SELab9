@@ -50,6 +50,19 @@ void multiply(int* matrix1, int* matrix2, int size) {
     displayMatrix(output, size, maxDigits/10);
 }
 
+void trace(int* matrix, int size) {
+    int output = 0;
+    for (int i = 0; i < size; i ++) {
+        output += *(matrix+i*(size+1));
+    }
+    cout << "Sum of main diagonal: " << output << endl;
+    output = 0;
+    for (int i = 0; i < size; i ++) {
+        output += *(matrix+(i+1)*(size-1));
+    }
+    cout << "Sum of secondary diagonal: " << output;
+}
+
 int main() {
     //Open a file
     string fileName;
@@ -104,6 +117,9 @@ int main() {
         } else if (choice == 3) {
             //Multiply the input matrices
             multiply(matrix1, matrix2, matrixSize);
+        } else if (choice == 4) {
+            //Print the sums of the diagonals
+            trace(matrix1, matrixSize);
         } else {
             cout << "Invalid choice.";
         }
