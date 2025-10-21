@@ -63,6 +63,21 @@ void trace(int* matrix, int size) {
     cout << "Sum of secondary diagonal: " << output;
 }
 
+void swapRows(int* matrix, int row1, int row2, int size) {
+    if (row1 >= 0 && row1 < size && row2 >= 0 && row2 < size) {
+        cout << "Row-swapped matrix:" << endl;
+        int buffer[size];
+        for (int i = 0; i < size; i ++) {
+            buffer[i] = *(matrix+size*row1+i);
+            *(matrix+size*row1+i) = *(matrix+size*row2+i);
+            *(matrix+size*row2+i) = buffer[i];
+        }
+        displayMatrix(matrix, size, 10);
+    } else {
+        cout << "Invalid row numbers.";
+    }
+}
+
 int main() {
     //Open a file
     string fileName;
@@ -102,6 +117,8 @@ int main() {
     cout << endl;
     //Start asking for more actions
     int choice = 8;
+    int row1 = 0;
+    int row2 = 0;
     while (choice > 1) {
         cout << "1. Quit\n2. Add\n3. Multiply\n4. Get Diagonals\n5. Swap Rows\n6. Swap Columns\n7. Change Entry\n";
         cout << "Please enter a choice: ";
@@ -120,6 +137,13 @@ int main() {
         } else if (choice == 4) {
             //Print the sums of the diagonals
             trace(matrix1, matrixSize);
+        } else if (choice == 5) {
+            //Ask for rows to swap
+            cout << "First row to swap: ";
+            cin >> row1;
+            cout << "Second row to swap: ";
+            cin >> row2;
+            swapRows(matrix1, row1, row2, matrixSize);
         } else {
             cout << "Invalid choice.";
         }
