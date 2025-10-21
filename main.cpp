@@ -7,10 +7,31 @@
 #include <fstream>
 using namespace std;
 
-void displayMatrix(int* data, int size) {
+void displayMatrix(int* data, int size, int digits) {
+    string spaces;
+    int curDigits;
     for (int i = 0; i < size*size; i ++) {
-        cout << ((*(data+i)<10)?" ":"") << *(data+i) << (((i+1)%size==0)?"\n":" ");
+        spaces = "";
+        curDigits = *(data+i);
+        while (digits>curDigits) {
+            curDigits *= 10;
+            spaces = spaces + " ";
+        }
+        cout << spaces << *(data+i) << (((i+1)%size==0)?"\n":" ");
     }
+}
+
+void add(int* matrix1, int* matrix2, int size) {
+    cout << "Sum of input matrices:" << endl;
+    int output[size*size];
+    int maxDigits = 10;
+    for (int i = 0; i < size * size; i ++) {
+        output[i] = *(matrix1+i) + *(matrix2+i);
+        while (maxDigits < output[i]) {
+            maxDigits *= 10;
+        }
+    }
+    displayMatrix(output, size, maxDigits/10);
 }
 
 int main() {
@@ -43,8 +64,29 @@ int main() {
         }
     }
     matrixFile.close();
-    displayMatrix(data+1, matrixSize);
+    //Display input matrices
+    displayMatrix(data+1, matrixSize, 10);
     cout << endl;
-    displayMatrix(data+1+matrixSize*matrixSize, matrixSize);
+    displayMatrix(data+1+matrixSize*matrixSize, matrixSize, 10);
+    cout << endl;
+    //Start asking for more actions
+    int choice = 8;
+    while (choice > 1) {
+        cout << "1. Quit\n2. Add\n3. Multiply\n4. Get Diagonals\n5. Swap Rows\n6. Swap Columns\n7. Change Entry\n";
+        cout << "Please enter a choice: ";
+        cin >> choice;
+        //Get choice action
+        cout << endl;
+        if (choice == 1) {
+            //Exit
+            cout << "Goodbye!";
+        } else if (choice == 2) {
+            //Add the input matrices
+            add(data+1, data+1+matrixSize*matrixSize, matrixSize);
+        } else {
+            cout << "Invalid choice.";
+        }
+        cout << endl << endl;
+    }
     return 0;
 }
