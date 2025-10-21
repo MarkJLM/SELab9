@@ -78,6 +78,37 @@ void swapRows(int* matrix, int row1, int row2, int size) {
     }
 }
 
+void swapClms(int* matrix, int clm1, int clm2, int size) {
+    if (clm1 >= 0 && clm1 < size && clm2 >= 0 && clm2 < size) {
+        cout << "Column-swapped matrix:" << endl;
+        int buffer[size];
+        for (int i = 0; i < size; i ++) {
+            buffer[i] = *(matrix+size*i+clm1);
+            *(matrix+size*i+clm1) = *(matrix+size*i+clm2);
+            *(matrix+size*i+clm2) = buffer[i];
+        }
+        displayMatrix(matrix, size, 10);
+    } else {
+        cout << "Invalid column numbers.";
+    }
+}
+
+void writeMatrix(int* matrix, int row, int clm, int entry, int size) {
+    if (row >= 0 && row < size && clm >= 0 && clm < size) {
+        cout << "Updated matrix:" << endl;
+        *(matrix+size*row+clm) = entry;
+        int maxDigits = 10;
+        for (int i = 0; i < size * size; i ++) {
+            while (maxDigits < *(matrix+i)) {
+                maxDigits *= 10;
+            }
+        }
+        displayMatrix(matrix, size, maxDigits/10);
+    } else {
+        cout << "Invalid index numbers.";
+    }
+}
+
 int main() {
     //Open a file
     string fileName;
@@ -119,6 +150,7 @@ int main() {
     int choice = 8;
     int row1 = 0;
     int row2 = 0;
+    int newEntry = 0;
     while (choice > 1) {
         cout << "1. Quit\n2. Add\n3. Multiply\n4. Get Diagonals\n5. Swap Rows\n6. Swap Columns\n7. Change Entry\n";
         cout << "Please enter a choice: ";
@@ -144,6 +176,22 @@ int main() {
             cout << "Second row to swap: ";
             cin >> row2;
             swapRows(matrix1, row1, row2, matrixSize);
+        } else if (choice == 6) {
+            //Ask for columns to swap
+            cout << "First column to swap: ";
+            cin >> row1;
+            cout << "Second column to swap: ";
+            cin >> row2;
+            swapClms(matrix1, row1, row2, matrixSize);
+        } else if (choice == 7) {
+            //Ask for index to change
+            cout << "Row index to change: ";
+            cin >> row1;
+            cout << "Column index to change: ";
+            cin >> row2;
+            cout << "New entry to insert: ";
+            cin >> newEntry;
+            writeMatrix(matrix1, row1, row2, newEntry, matrixSize);
         } else {
             cout << "Invalid choice.";
         }
